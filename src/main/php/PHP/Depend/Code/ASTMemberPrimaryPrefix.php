@@ -86,6 +86,16 @@ class PHP_Depend_Code_ASTMemberPrimaryPrefix extends PHP_Depend_Code_ASTNode
      */
     const CLAZZ = __CLASS__;
 
+    public function getClass()
+    {
+        return $this->getChild(1)->evaluate($this->getChild(0)->getType());
+    }
+
+    public function evaluate(PHP_Depend_Code_AbstractClassOrInterface $class)
+    {
+        return $this->getChild(1)->evaluate($this->getChild(0)->evaluate($class));
+    }
+
     /**
      * Returns <b>true</b> when this member primary prefix represents a static
      * property or method access.
