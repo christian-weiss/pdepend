@@ -3413,9 +3413,6 @@ abstract class PHP_Depend_Parser implements PHP_Depend_ConstantsI
             );
             break;
         }
-
-
-
         $prefix->addChild($postfix);
 
         return $prefix;
@@ -3425,7 +3422,7 @@ abstract class PHP_Depend_Parser implements PHP_Depend_ConstantsI
      * This method parses a method- or constant-postfix expression. This expression
      * will contain an identifier node as nested child.
      *
-     * @return PHP_Depend_Code_ASTNode
+     * @return PHP_Depend_Code_ASTMemberPostfixExpression
      * @throws PHP_Depend_Parser_Exception When an error occured during the
      *         parsing process.
      * @since 0.9.6
