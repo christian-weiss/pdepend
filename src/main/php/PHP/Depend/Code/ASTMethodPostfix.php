@@ -79,16 +79,8 @@ class PHP_Depend_Code_ASTMethodPostfix extends PHP_Depend_Code_ASTInvocation
 
     public function evaluate(PHP_Depend_Code_AbstractClassOrInterface $class)
     {
-        /*
-        if ($method = $class->getMethod($this->image)) {
-            return $method->getReturnClass();
-        }
-        return null;
-        */
-        foreach ($class->getAllMethods() as $method) {
-            if (0 === strcasecmp($method->getName(), $this->image)) {
-                return $method->getReturnClass();
-            }
+        if ($class->hasMethod($this->image)) {
+            return $class->getMethod($this->image)->getReturnClass();
         }
         return null;
     }

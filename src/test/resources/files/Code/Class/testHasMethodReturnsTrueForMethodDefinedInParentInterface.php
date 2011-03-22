@@ -1,0 +1,11 @@
+<?php
+class testHasMethodReturnsTrueForMethodDefinedInParentInterface
+    implements testHasMethodReturnsTrueForMethodDefinedInParentInterface_Interface
+{
+
+}
+
+interface testHasMethodReturnsTrueForMethodDefinedInParentInterface_Interface
+{
+    function testHasMethodReturnsTrueForMethodDefinedInParentInterface();
+}

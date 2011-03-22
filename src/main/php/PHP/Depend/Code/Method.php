@@ -61,6 +61,11 @@
 class PHP_Depend_Code_Method extends PHP_Depend_Code_AbstractCallable
 {
     /**
+     * The type of this class.
+     */
+    const CLAZZ = __CLASS__;
+
+    /**
      * The parent type object.
      *
      * @var PHP_Depend_Code_AbstractClassOrInterface $parent

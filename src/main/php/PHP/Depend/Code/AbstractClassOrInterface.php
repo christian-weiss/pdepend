@@ -165,6 +165,16 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
     protected $cached = false;
 
     /**
+     * List of all methods that are declared by the class itself or one of it's
+     * parent interfaces or classes.
+     *
+     * @var array(PHP_Depend_Code_Method)
+     * @runtime
+     * @since 0.11.0
+     */
+    private $_inheritedMethods = null;
+
+    /**
      * Setter method for the currently used token cache, where this class or
      * interface instance can store the associated tokens.
      *
@@ -228,7 +238,6 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
      * @return PHP_Depend_Code_ASTNodeI
      * @access private
      * @since 0.9.6
-     * @todo Refactor $_methods property to getAllMethods() when it exists.
      */
     public function getFirstChildOfType($targetType)
     {
@@ -257,7 +266,6 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
      * @return array(PHP_Depend_Code_ASTNodeI)
      * @access private
      * @since 0.9.6
-     * @todo Refactor $_methods property to getAllMethods() when it exists.
      */
     public function findChildrenOfType($targetType, array &$results = array())
     {
@@ -443,32 +451,91 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
     }
 
     /**
-     * Returns a list of all methods provided by this type or one of its parents.
+     * This method tests if this class or one of its parent classes or interfaces
+     * declares/defines a method for the given <b>$name</b>.
+     * 
+     * @param string $name Name of the searched method.
+     *
+     * @return boolean
+     * @since 0.11.0
+     */
+    public function hasMethod($name)
+    {
+        $methods = $this->getInheritedMethods();
+        return isset($methods[strtolower($name)]);
+    }
+
+    /**
+     * Returns a method instance for the given name that was declared/defined
+     * in this class' inheritance hierarchy. This method will throw an exception
+     * when no method for the given name exists.
+     *
+     * @param string $name The name of the searched method.
+     *
+     * @return PHP_Depend_Code_Method
+     * @throws OutOfRangeException When no method for the given name exists.
+     * @since 0.11.0
+     */
+    public function getMethod($name)
+    {
+        $methods = $this->getInheritedMethods();
+        if ($this->hasMethod($name)) {
+            return $methods[strtolower($name)];
+        }
+        throw new OutOfRangeException("Method not found {$this->name}::{$name}()");
+    }
+
+    /**
+     * Returns an array with all methods defined/declared in the inheritance
+     * hierarchy of this class instance.
      *
      * @return array(PHP_Depend_Code_Method)
-     * @since 0.9.10
+     * @since 0.11.0
      */
-    public function getAllMethods()
+    public function getInheritedMethods()
+    {
+        if (null === $this->_inheritedMethods) {
+            $this->_initInheritedMethods();
+        }
+        return $this->_inheritedMethods;
+    }
+
+    /**
+     * Traverses the inheritance hierarchy of this class and collects all
+     * methods defined/declared in this hierarchy.
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    private function _initInheritedMethods()
     {
         $methods = array();
         foreach ($this->getInterfaces() as $interface) {
-            foreach ($interface->getAllMethods() as $method) {
-                $methods[$method->getName()] = $method;
-            }
+            $methods = array_merge($methods, $interface->getInheritedMethods());
         }
 
         $parentClass = $this->getParentClass();
         if (is_object($parentClass)) {
-            foreach ($parentClass->getAllMethods() as $method) {
-                $methods[$method->getName()] = $method;
-            }
+            $methods = array_merge($methods, $parentClass->getInheritedMethods());
         }
 
         foreach ($this->methods as $method) {
-            $methods[$method->getName()] = $method;
+            $methods[strtolower($method->getName())] = $method;
         }
 
-        return $methods;
+        $this->_inheritedMethods = $methods;
+    }
+
+    /**
+     * Returns a list of all methods provided by this type or one of its parents.
+     *
+     * @return array(PHP_Depend_Code_Method)
+     * @since 0.9.10
+     * @deprecated Since 0.11.0
+     */
+    public function getAllMethods()
+    {
+        return $this->getInheritedMethods();
     }
 
     /**

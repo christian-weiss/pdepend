@@ -68,6 +68,124 @@ require_once dirname(__FILE__) . '/../Visitor/TestNodeVisitor.php';
 class PHP_Depend_Code_ClassTest extends PHP_Depend_Code_AbstractItemTest
 {
     /**
+     * testHasMethodReturnsFalseByDefault
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    public function testHasMethodReturnsFalseByDefault()
+    {
+        $class = new PHP_Depend_Code_Class(__CLASS__);
+        self::assertFalse($class->hasMethod(__FUNCTION__));
+    }
+
+    /**
+     * testHasMethodReturnsTrueForDefinedMethod
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    public function testHasMethodReturnsTrueForDefinedMethod()
+    {
+        $class = new PHP_Depend_Code_Class(__CLASS__);
+        $class->addMethod(new PHP_Depend_Code_Method(__FUNCTION__));
+
+        self::assertTrue($class->hasMethod(__FUNCTION__));
+    }
+
+    /**
+     * testHasMethodReturnsTrueForDefinedMethod
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    public function testHasMethodSearchesCaseInsensitive()
+    {
+        $class = new PHP_Depend_Code_Class(__CLASS__);
+        $class->addMethod(new PHP_Depend_Code_Method(__FUNCTION__));
+
+        self::assertTrue($class->hasMethod(strtoupper(__FUNCTION__)));        
+    }
+
+    /**
+     * testHasMethodReturnsTrueForMethodDefinedInParentInterface
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    public function testHasMethodReturnsTrueForMethodDefinedInParentInterface()
+    {
+        $class = $this->getFirstClassForTestCase();
+        self::assertTrue($class->hasMethod(__FUNCTION__));
+    }
+
+    /**
+     * testHasMethodReturnsTrueForMethodDefinedInParentClass
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    public function testHasMethodReturnsTrueForMethodDefinedInParentClass()
+    {
+        $class = $this->getFirstClassForTestCase();
+        self::assertTrue($class->hasMethod(__FUNCTION__));
+    }
+
+    /**
+     * testGetMethodReturnsMethodDeclaredInContextClass
+     *
+     * @return void
+     * since 0.11.0
+     */
+    public function testGetMethodReturnsMethodDeclaredInContextClass()
+    {
+        self::assertInstanceOf(
+            PHP_Depend_Code_Method::CLAZZ,
+            $this->getFirstClassForTestCase()->getMethod(__FUNCTION__)
+        );
+    }
+
+    /**
+     * testGetMethodReturnsMethodDeclaredInParentInterface
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    public function testGetMethodReturnsMethodDeclaredInParentInterface()
+    {
+        self::assertInstanceOf(
+            PHP_Depend_Code_Method::CLAZZ,
+            $this->getFirstClassForTestCase()->getMethod(__FUNCTION__)
+        );
+    }
+
+    /**
+     * testGetMethodReturnsMethodDeclaredInParentClass
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    public function testGetMethodReturnsMethodDeclaredInParentClass()
+    {
+        self::assertInstanceOf(
+            PHP_Depend_Code_Method::CLAZZ,
+            $this->getFirstClassForTestCase()->getMethod(__FUNCTION__)
+        );
+    }
+
+    /**
+     * testGetMethodThrowsExpectedExceptionForUnknownMethod
+     *
+     * @return void
+     * @since 0.11.0
+     * @expectedException OutOfRangeException
+     */
+    public function testGetMethodThrowsExpectedExceptionForUnknownMethod()
+    {
+        $this->getFirstClassForTestCase()->getMethod(__FUNCTION__);
+    }
+
+    /**
      * testGetAllMethodsContainsMethodsOfImplementedInterface
      *
      * @return void
