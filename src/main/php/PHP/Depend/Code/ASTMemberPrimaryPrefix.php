@@ -86,6 +86,14 @@ class PHP_Depend_Code_ASTMemberPrimaryPrefix extends PHP_Depend_Code_ASTNode
      */
     const CLAZZ = __CLASS__;
 
+    /**
+     * This method evaluates the execution chain for this member primary prefix
+     * and returns the resulting class. The return value of this method will be
+     * <b>NULL</b> if one element in the full path cannot be evaluated.
+     *
+     * @return PHP_Depend_Code_AbstractClassOrInterface
+     * @since 0.11.0
+     */
     public function getClass()
     {
         return $this->getChild(1)->evaluate($this->getChild(0)->getType());
