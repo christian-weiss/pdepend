@@ -734,6 +734,20 @@ class PHP_Depend_Builder_DefaultTest extends PHP_Depend_AbstractTest
             $this->createBuilder()->buildASTConstantPostfix('T_FOO')
         );
     }
+    
+    /**
+     * testBuildASTFunctionPostfixReturnsExpectedType
+     * 
+     * @return void
+     * @since 0.11.0
+     */
+    public function testBuildASTFunctionPostfixReturnsExpectedType()
+    {
+        self::assertInstanceOf(
+            PHP_Depend_Code_ASTFunctionPostfix::CLAZZ,
+            $this->createBuilder()->buildASTFunctionPostfix('evil')
+        );
+    }
 
     /**
      * Creates a clean builder test instance.
