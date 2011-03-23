@@ -1,5 +1,5 @@
 <?php
-class testGetAllMethodsContainsMethodsOfImplementedInterface
+abstract class testGetInheritedMethodsContainsMethodsOfImplementedInterface
     implements GetAllMethodsContainsMethodsOfImplementedInterface
 {
 

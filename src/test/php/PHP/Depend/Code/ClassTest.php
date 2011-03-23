@@ -186,70 +186,70 @@ class PHP_Depend_Code_ClassTest extends PHP_Depend_Code_AbstractItemTest
     }
 
     /**
-     * testGetAllMethodsContainsMethodsOfImplementedInterface
+     * testGetInheritedMethodsContainsMethodsOfImplementedInterface
      *
      * @return void
      */
-    public function testGetAllMethodsContainsMethodsOfImplementedInterface()
+    public function testGetInheritedMethodsContainsMethodsOfImplementedInterface()
     {
         $class  = $this->getFirstClassForTestCase();
-        $actual = array_keys($class->getAllMethods());
+        $actual = array_keys($class->getInheritedMethods());
         sort($actual);
 
         self::assertEquals(array('bar', 'baz', 'foo'), $actual);
     }
 
     /**
-     * testGetAllMethodsContainsMethodsOfImplementedInterfaces
+     * testGetInheritedMethodsContainsMethodsOfImplementedInterfaces
      *
      * @return void
      */
-    public function testGetAllMethodsContainsMethodsOfImplementedInterfaces()
+    public function testGetInheritedMethodsContainsMethodsOfImplementedInterfaces()
     {
         $class  = $this->getFirstClassForTestCase();
-        $actual = array_keys($class->getAllMethods());
+        $actual = array_keys($class->getInheritedMethods());
         sort($actual);
 
         self::assertEquals(array('bar', 'baz', 'foo'), $actual);
     }
 
     /**
-     * testGetAllMethodsContainsMethodsOfIndirectImplementedInterfaces
+     * testGetInheritedMethodsContainsMethodsOfIndirectImplementedInterfaces
      *
      * @return void
      */
-    public function testGetAllMethodsContainsMethodsOfIndirectImplementedInterfaces()
+    public function testGetInheritedMethodsContainsMethodsOfIndirectImplementedInterfaces()
     {
         $class  = $this->getFirstClassForTestCase();
-        $actual = array_keys($class->getAllMethods());
+        $actual = array_keys($class->getInheritedMethods());
         sort($actual);
 
         self::assertEquals(array('bar', 'baz', 'foo'), $actual);
     }
 
     /**
-     * testGetAllMethodsContainsMethodsOfParentClass
+     * testGetInheritedMethodsContainsMethodsOfParentClass
      *
      * @return void
      */
-    public function testGetAllMethodsContainsMethodsOfParentClass()
+    public function testGetInheritedMethodsContainsMethodsOfParentClass()
     {
         $class  = $this->getFirstClassForTestCase();
-        $actual = array_keys($class->getAllMethods());
+        $actual = array_keys($class->getInheritedMethods());
         sort($actual);
 
         self::assertEquals(array('bar', 'baz', 'foo'), $actual);
     }
 
     /**
-     * testGetAllMethodsContainsMethodsOfParentClasses
+     * testGetInheritedMethodsContainsMethodsOfParentClasses
      *
      * @return void
      */
-    public function testGetAllMethodsContainsMethodsOfParentClasses()
+    public function testGetInheritedMethodsContainsMethodsOfParentClasses()
     {
         $class  = $this->getFirstClassForTestCase();
-        $actual = array_keys($class->getAllMethods());
+        $actual = array_keys($class->getInheritedMethods());
         sort($actual);
 
         self::assertEquals(array('bar', 'baz', 'foo'), $actual);
