@@ -72,6 +72,7 @@ class PHP_Depend_Code_ASTMethodPostfixTest extends PHP_Depend_Code_ASTNodeTest
      * testEvaluateOnDirectClassMethodCallReturnsExpectedType
      * 
      * @return void
+     * @since 0.11.0
      */
     public function testEvaluateOnDirectClassMethodCallReturnsExpectedType()
     {
@@ -83,6 +84,7 @@ class PHP_Depend_Code_ASTMethodPostfixTest extends PHP_Depend_Code_ASTNodeTest
      * testEvaluateOnDirectInheritMethodCallReturnsExpectedType
      *
      * @return void
+     * @since 0.11.0
      */
     public function testEvaluateOnDirectInheritMethodCallReturnsExpectedType()
     {
@@ -94,11 +96,24 @@ class PHP_Depend_Code_ASTMethodPostfixTest extends PHP_Depend_Code_ASTNodeTest
      * testEvaluateOnChainedClassMethodCallReturnsExpectedType
      * 
      * @return void
+     * @since 0.11.0
      */
     public function testEvaluateOnChainedClassMethodCallReturnsExpectedType()
     {
         $prefix = $this->_getFirstMemberPrimaryPrefixInFunction(__METHOD__);
         self::assertEquals('MyBar', $prefix->getClass()->getName());
+    }
+
+    /**
+     * testEvaluateOnComplexChainedClassMethodCallReturnsExpectedType
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    public function testEvaluateOnComplexChainedClassMethodCallReturnsExpectedType()
+    {
+        $prefix = $this->_getFirstMemberPrimaryPrefixInFunction(__METHOD__);
+        self::assertEquals('Iterator', $prefix->getClass()->getName());
     }
 
     /**
