@@ -526,6 +526,8 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
         $this->_inheritedMethods = $methods;
     }
 
+    // @codeCoverageIgnoreStart
+
     /**
      * Returns a list of all methods provided by this type or one of its parents.
      *
@@ -537,6 +539,8 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
     {
         return $this->getInheritedMethods();
     }
+
+    // @codeCoverageIgnoreEnd
 
     /**
      * Returns all {@link PHP_Depend_Code_Method} objects in this type.
