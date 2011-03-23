@@ -70,6 +70,54 @@ require_once dirname(__FILE__) . '/ASTNodeTest.php';
 class PHP_Depend_Code_ASTPropertyPostfixTest extends PHP_Depend_Code_ASTNodeTest
 {
     /**
+     * testEvaluateOnDirectClassFieldAccessReturnsExpectedType
+     * 
+     * @return void
+     * @since 0.11.0
+     */
+    public function testEvaluateOnDirectClassFieldAccessReturnsExpectedType()
+    {
+        $prefix = $this->_getFirstMemberPrimaryPrefixInFunction(__METHOD__);
+        self::assertEquals('MyFoo', $prefix->getClass()->getName());
+    }
+
+    /**
+     * testEvaluateOnDirectInheritClassFieldAccessReturnsExpectedType
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    public function testEvaluateOnDirectInheritClassFieldAccessReturnsExpectedType()
+    {
+        $prefix = $this->_getFirstMemberPrimaryPrefixInFunction(__METHOD__);
+        self::assertEquals('MyBar', $prefix->getClass()->getName());
+    }
+
+    /**
+     * testEvaluateOnChainedClassFieldAccessReturnsExpectedType
+     * 
+     * @return void
+     * @since 0.11.0
+     */
+    public function testEvaluateOnChainedClassFieldAccessReturnsExpectedType()
+    {
+        $prefix = $this->_getFirstMemberPrimaryPrefixInFunction(__METHOD__);
+        self::assertEquals('MyBar', $prefix->getClass()->getName());
+    }
+
+    /**
+     * testEvaluateOnComplexChainedClassFieldAccessReturnsExpectedType
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    public function testEvaluateOnComplexChainedClassFieldAccessReturnsExpectedType()
+    {
+        $prefix = $this->_getFirstMemberPrimaryPrefixInFunction(__METHOD__);
+        self::assertEquals('Iterator', $prefix->getClass()->getName());
+    }
+    
+    /**
      * testAcceptInvokesVisitOnGivenVisitor
      *
      * @return void

@@ -449,6 +449,57 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
         }
         return false;
     }
+    
+    /**
+     *
+     * @var array(PHP_Depend_Code_Property)
+     * @since 0.11.0
+     */
+    private $_properties = null;
+    
+    public function hasProperty($name)
+    {
+        $properties = $this->getPropertiesInherited();
+        return isset($properties[ltrim($name, '$')]);
+    }
+    
+    public function getProperty($name)
+    {
+        if ($this->hasProperty($name)) {
+            $properties = $this->getPropertiesInherited();
+            return $properties[ltrim($name, '$')];
+        }
+        throw new OutOfRangeException("Property not found {$this->name}::{$name}");
+    }
+    
+    public function getProperties()
+    {
+        return new PHP_Depend_Code_NodeIterator($this->initOrReturnProperties());
+    }
+    
+    public function getPropertiesInherited()
+    {
+        if (is_object($parentClass = $this->getParentClass())) {
+            return array_merge(
+                $parentClass->getPropertiesInherited(), 
+                $this->initOrReturnProperties()
+            );
+        }
+        return $this->initOrReturnProperties();
+    }
+    
+    protected function initOrReturnProperties()
+    {
+        if (null === $this->_properties) {
+            $this->_properties = $this->initProperties();
+        }
+        return $this->_properties;
+    }
+    
+    protected function initProperties()
+    {
+        return array();
+    }
 
     /**
      * This method tests if this class or one of its parent classes or interfaces
@@ -461,7 +512,7 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
      */
     public function hasMethod($name)
     {
-        $methods = $this->getInheritedMethods();
+        $methods = $this->getMethodsInherited();
         return isset($methods[strtolower($name)]);
     }
 
@@ -478,8 +529,8 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
      */
     public function getMethod($name)
     {
-        $methods = $this->getInheritedMethods();
         if ($this->hasMethod($name)) {
+            $methods = $this->getMethodsInherited();
             return $methods[strtolower($name)];
         }
         throw new OutOfRangeException("Method not found {$this->name}::{$name}()");
@@ -492,7 +543,7 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
      * @return array(PHP_Depend_Code_Method)
      * @since 0.11.0
      */
-    public function getInheritedMethods()
+    public function getMethodsInherited()
     {
         if (null === $this->_inheritedMethods) {
             $this->_initInheritedMethods();
@@ -511,12 +562,12 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
     {
         $methods = array();
         foreach ($this->getInterfaces() as $interface) {
-            $methods = array_merge($methods, $interface->getInheritedMethods());
+            $methods = array_merge($methods, $interface->getMethodsInherited());
         }
 
         $parentClass = $this->getParentClass();
         if (is_object($parentClass)) {
-            $methods = array_merge($methods, $parentClass->getInheritedMethods());
+            $methods = array_merge($methods, $parentClass->getMethodsInherited());
         }
 
         foreach ($this->methods as $method) {
@@ -537,7 +588,7 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
      */
     public function getAllMethods()
     {
-        return $this->getInheritedMethods();
+        return $this->getMethodsInherited();
     }
 
     // @codeCoverageIgnoreEnd

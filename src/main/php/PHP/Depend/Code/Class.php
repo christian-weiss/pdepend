@@ -112,40 +112,6 @@ class PHP_Depend_Code_Class extends PHP_Depend_Code_AbstractClassOrInterface
     }
 
     /**
-     * Returns all properties for this class.
-     *
-     * @return PHP_Depend_Code_NodeIterator
-     */
-    public function getProperties()
-    {
-        if ($this->_properties === null) {
-            $this->_properties = array();
-
-            $declarations = $this->findChildrenOfType(
-                PHP_Depend_Code_ASTFieldDeclaration::CLAZZ
-            );
-            foreach ($declarations as $declaration) {
-                $declarators = $declaration->findChildrenOfType(
-                    PHP_Depend_Code_ASTVariableDeclarator::CLAZZ
-                );
-
-                foreach ($declarators as $declarator) {
-
-                    $property = new PHP_Depend_Code_Property(
-                        $declaration, $declarator
-                    );
-                    $property->setDeclaringClass($this);
-                    $property->setSourceFile($this->getSourceFile());
-
-                    $this->_properties[] = $property;
-                }
-            }
-        }
-
-        return new PHP_Depend_Code_NodeIterator($this->_properties);
-    }
-
-    /**
      * Checks that this user type is a subtype of the given <b>$type</b> instance.
      *
      * @param PHP_Depend_Code_AbstractClassOrInterface $type Possible parent type.
@@ -244,6 +210,37 @@ class PHP_Depend_Code_Class extends PHP_Depend_Code_AbstractClassOrInterface
     }
 
     /**
+     *
+     * @return array(string=>PHP_Depend_Code_Property)
+     * @since 0.11.0
+     */
+    protected function initProperties()
+    {
+        $declarations = $this->findChildrenOfType(
+            PHP_Depend_Code_ASTFieldDeclaration::CLAZZ
+        );
+
+        $properties = array();
+        foreach ($declarations as $declaration) {
+            $declarators = $declaration->findChildrenOfType(
+                PHP_Depend_Code_ASTVariableDeclarator::CLAZZ
+            );
+
+            foreach ($declarators as $declarator) {
+
+                $property = new PHP_Depend_Code_Property(
+                    $declaration, $declarator
+                );
+                $property->setDeclaringClass($this);
+                $property->setSourceFile($this->getSourceFile());
+
+                $properties[ltrim($property->getName(), '$')] = $property;
+            }
+        }
+        return $properties;
+    }
+
+    /**
      * This method can be called by the PHP_Depend runtime environment or a
      * utilizing component to free up memory. This methods are required for
      * PHP version < 5.3 where cyclic references can not be resolved
@@ -268,6 +265,5 @@ class PHP_Depend_Code_Class extends PHP_Depend_Code_AbstractClassOrInterface
     private function _removeReferencesToProperties()
     {
         $this->getProperties()->free();
-        $this->_properties = array();
     }
 }

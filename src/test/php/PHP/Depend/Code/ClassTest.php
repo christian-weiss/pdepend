@@ -193,7 +193,7 @@ class PHP_Depend_Code_ClassTest extends PHP_Depend_Code_AbstractItemTest
     public function testGetInheritedMethodsContainsMethodsOfImplementedInterface()
     {
         $class  = $this->getFirstClassForTestCase();
-        $actual = array_keys($class->getInheritedMethods());
+        $actual = array_keys($class->getMethodsInherited());
         sort($actual);
 
         self::assertEquals(array('bar', 'baz', 'foo'), $actual);
@@ -207,7 +207,7 @@ class PHP_Depend_Code_ClassTest extends PHP_Depend_Code_AbstractItemTest
     public function testGetInheritedMethodsContainsMethodsOfImplementedInterfaces()
     {
         $class  = $this->getFirstClassForTestCase();
-        $actual = array_keys($class->getInheritedMethods());
+        $actual = array_keys($class->getMethodsInherited());
         sort($actual);
 
         self::assertEquals(array('bar', 'baz', 'foo'), $actual);
@@ -221,7 +221,7 @@ class PHP_Depend_Code_ClassTest extends PHP_Depend_Code_AbstractItemTest
     public function testGetInheritedMethodsContainsMethodsOfIndirectImplementedInterfaces()
     {
         $class  = $this->getFirstClassForTestCase();
-        $actual = array_keys($class->getInheritedMethods());
+        $actual = array_keys($class->getMethodsInherited());
         sort($actual);
 
         self::assertEquals(array('bar', 'baz', 'foo'), $actual);
@@ -235,7 +235,7 @@ class PHP_Depend_Code_ClassTest extends PHP_Depend_Code_AbstractItemTest
     public function testGetInheritedMethodsContainsMethodsOfParentClass()
     {
         $class  = $this->getFirstClassForTestCase();
-        $actual = array_keys($class->getInheritedMethods());
+        $actual = array_keys($class->getMethodsInherited());
         sort($actual);
 
         self::assertEquals(array('bar', 'baz', 'foo'), $actual);
@@ -249,7 +249,7 @@ class PHP_Depend_Code_ClassTest extends PHP_Depend_Code_AbstractItemTest
     public function testGetInheritedMethodsContainsMethodsOfParentClasses()
     {
         $class  = $this->getFirstClassForTestCase();
-        $actual = array_keys($class->getInheritedMethods());
+        $actual = array_keys($class->getMethodsInherited());
         sort($actual);
 
         self::assertEquals(array('bar', 'baz', 'foo'), $actual);

@@ -71,6 +71,11 @@ class PHP_Depend_Code_ASTConstantPostfix extends PHP_Depend_Code_ASTNode
      * Type of this node class.
      */
     const CLAZZ = __CLASS__;
+    
+    public function evaluate(PHP_Depend_Code_AbstractClassOrInterface $class)
+    {
+        return null;
+    }
 
     /**
      * Accept method of the visitor design pattern. This method will be called

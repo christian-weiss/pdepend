@@ -115,6 +115,30 @@ class PHP_Depend_Code_ASTMethodPostfixTest extends PHP_Depend_Code_ASTNodeTest
         $prefix = $this->_getFirstMemberPrimaryPrefixInFunction(__METHOD__);
         self::assertEquals('Iterator', $prefix->getClass()->getName());
     }
+    
+    /**
+     * testEvaluateOnChainedClassMethodCallWithScalarReturn
+     * 
+     * @return void
+     * @since 0.11.0
+     */
+    public function testEvaluateOnChainedClassMethodCallWithScalarReturn()
+    {
+        $prefix = $this->_getFirstMemberPrimaryPrefixInFunction(__METHOD__);
+        self::assertNull($prefix->getClass());
+    }
+    
+    /**
+     * testEvaluateOnChainedClassMethodCallWithUnknownReturnClass
+     * 
+     * @return void
+     * @since 0.11.0
+     */
+    public function testEvaluateOnChainedClassMethodCallWithUnknownReturnClass()
+    {
+        $prefix = $this->_getFirstMemberPrimaryPrefixInFunction(__METHOD__);
+        self::assertNull($prefix->getClass());        
+    }
 
     /**
      * testObjectMethodPostfixHasExpectedStartLine

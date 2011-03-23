@@ -91,9 +91,12 @@ class PHP_Depend_Code_ASTMemberPrimaryPrefix extends PHP_Depend_Code_ASTNode
         return $this->getChild(1)->evaluate($this->getChild(0)->getType());
     }
 
-    public function evaluate(PHP_Depend_Code_AbstractClassOrInterface $class)
+    public function evaluate(PHP_Depend_Code_AbstractClassOrInterface $class = null)
     {
-        return $this->getChild(1)->evaluate($this->getChild(0)->evaluate($class));
+        if (is_object($class)) {
+            return $this->getChild(1)->evaluate($this->getChild(0)->evaluate($class));
+        }
+        return null;
     }
 
     /**

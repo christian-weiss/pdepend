@@ -77,9 +77,9 @@ class PHP_Depend_Code_ASTMethodPostfix extends PHP_Depend_Code_ASTInvocation
      */
     const CLAZZ = __CLASS__;
 
-    public function evaluate(PHP_Depend_Code_AbstractClassOrInterface $class)
+    public function evaluate(PHP_Depend_Code_AbstractClassOrInterface $class = null)
     {
-        if ($class->hasMethod($this->image)) {
+        if (is_object($class) && $class->hasMethod($this->image)) {
             return $class->getMethod($this->image)->getReturnClass();
         }
         return null;

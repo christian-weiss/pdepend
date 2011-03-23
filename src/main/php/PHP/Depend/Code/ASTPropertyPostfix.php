@@ -80,6 +80,14 @@ class PHP_Depend_Code_ASTPropertyPostfix extends PHP_Depend_Code_ASTNode
      * Type of this node class.
      */
     const CLAZZ = __CLASS__;
+    
+    public function evaluate(PHP_Depend_Code_AbstractClassOrInterface $class = null)
+    {
+        if (is_object($class) && $class->hasProperty($this->image)) {
+            return $class->getProperty($this->image)->getClass();
+        }
+        return null;
+    }
 
     /**
      * Accept method of the visitor design pattern. This method will be called
