@@ -210,6 +210,8 @@ class PHP_Depend_Code_Class extends PHP_Depend_Code_AbstractClassOrInterface
     }
 
     /**
+     * This method initializes the properties directly declared in this class
+     * instance.
      *
      * @return array(string=>PHP_Depend_Code_Property)
      * @since 0.11.0

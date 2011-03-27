@@ -44,21 +44,12 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.pdepend.org/
- * @since      0.9.6
+ * @since      0.11.0
  */
 
 /**
- * This class represents a method postfix expression..
- *
- * <code>
- * //   ---------
- * Foo::bar($baz);
- * //   ---------
- *
- * //   ----------
- * Foo::$bar($baz);
- * //   ----------
- * </code>
+ * This interface marks an AST node instance as class aware. This means the we
+ * can ask an instance of that class for the type that it represents.
  *
  * @category   PHP
  * @package    PHP_Depend
@@ -68,49 +59,15 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.pdepend.org/
- * @since      0.9.6
+ * @since      0.11.0
  */
-class PHP_Depend_Code_ASTMethodPostfix extends PHP_Depend_Code_ASTInvocation
+interface PHP_Depend_Code_ASTClassAware
 {
     /**
-     * Type of this node class.
-     */
-    const CLAZZ = __CLASS__;
-
-    /**
-     * This method tries to evaluate the return type of the represented method
-     * agains the given class or interface instance. If the evaluation was 
-     * successul this method will return the class or interface returned by the
-     * associated method. If the given class is <b>NULL</b> or the associated
-     * method does not return a class/interface, this method will return
-     * <b>NULL</b>.
-     *
-     * @param PHP_Depend_Code_AbstractClassOrInterface $class The context class
-     *        or interface on which the associated method was called.
+     * This method returns the class or interface instance that is referenced by
+     * the node that implements this interface.
      * 
      * @return PHP_Depend_Code_AbstractClassOrInterface
-     * @since 0.11.0
      */
-    public function evaluate(PHP_Depend_Code_AbstractClassOrInterface $class = null)
-    {
-        if (is_object($class) && $class->hasMethod($this->image)) {
-            return $class->getMethod($this->image)->getReturnClass();
-        }
-        return null;
-    }
-
-    /**
-     * Accept method of the visitor design pattern. This method will be called
-     * by a visitor during tree traversal.
-     *
-     * @param PHP_Depend_Code_ASTVisitorI $visitor The calling visitor instance.
-     * @param mixed                       $data    Optional previous calculated data.
-     *
-     * @return mixed
-     * @since 0.9.12
-     */
-    public function accept(PHP_Depend_Code_ASTVisitorI $visitor, $data = null)
-    {
-        return $visitor->visitMethodPostfix($this, $data);
-    }
+    function getClass();
 }

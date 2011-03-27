@@ -71,7 +71,19 @@ class PHP_Depend_Code_ASTConstantPostfix extends PHP_Depend_Code_ASTNode
      * Type of this node class.
      */
     const CLAZZ = __CLASS__;
-    
+
+    /**
+     * This method tries to evaluate the return type of the represented constant
+     * agains the given class or interface instance. This method will always 
+     * return <b>NULL</b>, because in PHP a constant never reference a class
+     * instance.
+     *
+     * @param PHP_Depend_Code_AbstractClassOrInterface $class The context class
+     *        that should be used as evaluation context for this constant.
+     * 
+     * @return PHP_Depend_Code_AbstractClassOrInterface
+     * @since 0.11.0
+     */
     public function evaluate(PHP_Depend_Code_AbstractClassOrInterface $class)
     {
         return null;

@@ -163,6 +163,14 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
      * @since 0.10.0
      */
     protected $cached = false;
+    
+    /**
+     * Hash with all properties defined in this class or interface instance.
+     *
+     * @var array(PHP_Depend_Code_Property)
+     * @since 0.11.0
+     */
+    private $_properties = null;
 
     /**
      * List of all methods that are declared by the class itself or one of it's
@@ -449,20 +457,35 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
         }
         return false;
     }
-    
+
     /**
+     * This method tests if this class or interface instance defines a property
+     * for the given name. It will return <b>true</b> if a property for the 
+     * given name exists, otherwise this method will return <b>false</b>.
      *
-     * @var array(PHP_Depend_Code_Property)
+     * @param string $name The name of the searched property.
+     * 
+     * @return boolean
      * @since 0.11.0
      */
-    private $_properties = null;
-    
     public function hasProperty($name)
     {
         $properties = $this->getPropertiesInherited();
         return isset($properties[ltrim($name, '$')]);
     }
     
+    /**
+     * This method will return a property instance for the given name or it will
+     * throw an exception if no matching property exists in this class or one of
+     * the class' parents.
+     *
+     * @param string $name The name of the searched property.
+     * 
+     * @return PHP_Depend_Code_Property
+     * @throws OutOfRangeException If no property for the given name exists in
+     *         this class or one of it's parent classes.
+     * @since 0.11.0
+     */
     public function getProperty($name)
     {
         if ($this->hasProperty($name)) {
@@ -472,11 +495,28 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
         throw new OutOfRangeException("Property not found {$this->name}::{$name}");
     }
     
+    /**
+     * This method returns an iterator with all those properties that are defined
+     * within the context class. The iterator does <b>not</b> contain those
+     * properties defined in one of the class' parents.
+     *
+     * @return PHP_Depend_Code_NodeIterator
+     * @since 0.11.0
+     */
     public function getProperties()
     {
         return new PHP_Depend_Code_NodeIterator($this->initOrReturnProperties());
     }
     
+    /**
+     * This method returns an array with all properties declared in this class
+     * or one of it's parent classes. It uses the regular PHP overwrite rule, so
+     * that only the newest property in the inheritance hierarchy with the same 
+     * name will be returned by thos method.
+     *
+     * @return array(PHP_Depend_Code_Property)
+     * @since 0.11.0
+     */
     public function getPropertiesInherited()
     {
         if (is_object($parentClass = $this->getParentClass())) {
@@ -488,6 +528,14 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
         return $this->initOrReturnProperties();
     }
     
+    /**
+     * This method will initialize the list of properties declared in this class
+     * during the first call to this method. All consecutive calls will return
+     * a cached list instance.
+     *
+     * @return array(PHP_Depend_Code_Property)
+     * @since 0.11.0
+     */
     protected function initOrReturnProperties()
     {
         if (null === $this->_properties) {
@@ -496,6 +544,12 @@ abstract class PHP_Depend_Code_AbstractClassOrInterface
         return $this->_properties;
     }
     
+    /**
+     * This method will initialize the list of properties declared in this class.
+     *
+     * @return array(PHP_Depend_Code_Property)
+     * @since 0.11.0
+     */
     protected function initProperties()
     {
         return array();

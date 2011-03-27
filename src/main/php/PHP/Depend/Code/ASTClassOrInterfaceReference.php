@@ -62,7 +62,8 @@
  * @since      0.9.5
  */
 class PHP_Depend_Code_ASTClassOrInterfaceReference
-    extends PHP_Depend_Code_ASTTypeNode
+       extends PHP_Depend_Code_ASTTypeNode
+    implements PHP_Depend_Code_ASTClassAware
 {
     /**
      * The image type of this node.
@@ -94,6 +95,18 @@ class PHP_Depend_Code_ASTClassOrInterfaceReference
         parent::__construct($qualifiedName);
 
         $this->context = $context;
+    }
+
+    /**
+     * This method returns the class or interface instance that is referenced by
+     * the node that implements this interface.
+     *
+     * @return PHP_Depend_Code_AbstractClassOrInterface
+     * @since 0.11.0
+     */
+    public function getClass()
+    {
+        return $this->getType();
     }
 
     /**

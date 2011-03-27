@@ -81,6 +81,19 @@ class PHP_Depend_Code_ASTPropertyPostfix extends PHP_Depend_Code_ASTNode
      */
     const CLAZZ = __CLASS__;
     
+    /**
+     * This method tries to evaluate this property postfix against the given 
+     * class instance and then return the context class/interface type of this
+     * property. This method will return <b>NULL</b> if this property postfix
+     * could not be found in the given <b>$class</b> or the represented property
+     * type is not a class or interface.
+     *
+     * @param PHP_Depend_Code_AbstractClassOrInterface $class The context class
+     *        on which this property postfix was accessed on.
+     * 
+     * @return PHP_Depend_Code_AbstractClassOrInterface
+     * @since 0.11.0
+     */
     public function evaluate(PHP_Depend_Code_AbstractClassOrInterface $class = null)
     {
         if (is_object($class) && $class->hasProperty($this->image)) {

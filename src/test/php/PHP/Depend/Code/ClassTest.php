@@ -983,6 +983,94 @@ class PHP_Depend_Code_ClassTest extends PHP_Depend_Code_AbstractItemTest
 
         self::assertEquals($expected, $actual);
     }
+    
+    /**
+     * testHasPropertyReturnsFalseByDefault
+     * 
+     * @return void
+     * @since 0.11.0
+     */
+    public function testHasPropertyReturnsFalseByDefault()
+    {
+        $class = new PHP_Depend_Code_Class(__CLASS__);
+        self::assertFalse($class->hasProperty(__FUNCTION__));
+    }
+
+    /**
+     * testHasPropertyReturnsTrueForDeclaredProperty
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    public function testHasPropertyReturnsTrueForDeclaredProperty()
+    {
+        $class = $this->getFirstClassForTestCase();
+        self::assertTrue($class->hasProperty(__FUNCTION__));
+    }
+
+    /**
+     * testHasPropertyReturnsTrueForDeclaredPropertyInParent
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    public function testHasPropertyReturnsTrueForDeclaredPropertyInParent()
+    {
+        $class = $this->getFirstClassForTestCase();
+        self::assertTrue($class->hasProperty(__FUNCTION__));
+    }
+
+    /**
+     * testHasPropertyReturnsTrueForDeclaredPropertyInParentParent
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    public function testHasPropertyReturnsTrueForDeclaredPropertyInParentParent()
+    {
+        $class = $this->getFirstClassForTestCase();
+        self::assertTrue($class->hasProperty(__FUNCTION__));
+    }
+
+    /**
+     * testGetPropertyReturnsPropertyDeclaredInContextClass
+     *
+     * @return void
+     * since 0.11.0
+     */
+    public function testGetPropertyReturnsPropertyDeclaredInContextClass()
+    {
+        self::assertInstanceOf(
+            PHP_Depend_Code_Property::CLAZZ,
+            $this->getFirstClassForTestCase()->getProperty(__FUNCTION__)
+        );
+    }
+
+    /**
+     * testGetPropertyReturnsPropertyDeclaredInParentClass
+     *
+     * @return void
+     * @since 0.11.0
+     */
+    public function testGetPropertyReturnsPropertyDeclaredInParentClass()
+    {
+        self::assertInstanceOf(
+            PHP_Depend_Code_Property::CLAZZ,
+            $this->getFirstClassForTestCase()->getProperty(__FUNCTION__)
+        );
+    }
+
+    /**
+     * testGetPropertyThrowsExpectedExceptionForUnknownProperty
+     *
+     * @return void
+     * @since 0.11.0
+     * @expectedException OutOfRangeException
+     */
+    public function testGetPropertyThrowsExpectedExceptionForUnknownProperty()
+    {
+        $this->getFirstClassForTestCase()->getProperty(__FUNCTION__);
+    }
 
     /**
      * testGetPropertiesReturnsExpectedNumberOfProperties
@@ -993,6 +1081,63 @@ class PHP_Depend_Code_ClassTest extends PHP_Depend_Code_AbstractItemTest
     {
         $class = $this->getFirstClassForTestCase();
         self::assertEquals(6, count($class->getProperties()));
+    }
+    
+    /**
+     * testGetPropertiesNotReturnsPropertiesDeclaredInParent
+     * 
+     * @return void
+     * @since 0.11.0
+     */
+    public function testGetPropertiesNotReturnsPropertiesDeclaredInParent()
+    {
+        $class = $this->getFirstClassForTestCase();
+        self::assertEquals(2, count($class->getProperties()));        
+    }
+    
+    /**
+     * testGetPropertiesInheritedReturnsProperties
+     * 
+     * @return void
+     * @since 0.11.0
+     */
+    public function testGetPropertiesInheritedReturnsProperties()
+    {
+        $actual = array();
+        foreach ($this->getFirstClassForTestCase()->getPropertiesInherited() as $p) {
+            $actual[] = $p->getName();
+        }
+        self::assertEquals(array('$a', '$b', '$c'), $actual);
+    }
+    
+    /**
+     * testGetPropertiesInheritedReturnsPropertiesDefinedInParent
+     * 
+     * @return void
+     * @since 0.11.0
+     */
+    public function testGetPropertiesInheritedReturnsPropertiesDefinedInParent()
+    {
+        $actual = array();
+        foreach ($this->getFirstClassForTestCase()->getPropertiesInherited() as $p) {
+            $actual[] = $p->getName();
+        }
+        self::assertEquals(array('$b', '$c', '$a'), $actual);
+    }
+    
+    /**
+     * testGetPropertiesInheritedHandlesPropertyOverwriteAsExpected
+     * 
+     * @return void
+     * @since 0.11.0
+     */
+    public function testGetPropertiesInheritedHandlesPropertyOverwriteAsExpected()
+    {
+        $actual = array();
+        foreach ($this->getFirstClassForTestCase()->getPropertiesInherited() as $p) {
+            $actual[$p->getName()] = $p->getDefaultValue();
+        }
+        self::assertEquals(array('$a' => 23, '$b' => 17, '$c' => 42), $actual);
     }
 
     /**

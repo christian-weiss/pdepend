@@ -96,15 +96,28 @@ class PHP_Depend_Code_ASTMemberPrimaryPrefix extends PHP_Depend_Code_ASTNode
      */
     public function getClass()
     {
-        return $this->getChild(1)->evaluate($this->getChild(0)->getType());
+        return $this->getChild(1)->evaluate($this->getChild(0)->getClass());
     }
 
+    /**
+     * This method tries to evaluate the return type of this member primary 
+     * prefix agains the given class or interface instance. If the evaluation 
+     * was successul this method will return the class or interface returned by 
+     * this primary prefix. If the given class is <b>NULL</b> or this prefix not
+     * results in a class/interface, this method will return <b>NULL</b>.
+     *
+     * @param PHP_Depend_Code_AbstractClassOrInterface $class The context class
+     *        that will be used as starting context for the evaluate process.
+     * 
+     * @return PHP_Depend_Code_AbstractClassOrInterface 
+     * @since 0.11.0
+     */
     public function evaluate(PHP_Depend_Code_AbstractClassOrInterface $class = null)
     {
-        if (is_object($class)) {
-            return $this->getChild(1)->evaluate($this->getChild(0)->evaluate($class));
+        if (null === $class) {
+            return null;
         }
-        return null;
+        return $this->getChild(1)->evaluate($this->getChild(0)->evaluate($class));
     }
 
     /**

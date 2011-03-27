@@ -61,8 +61,10 @@ require_once dirname(__FILE__) . '/ASTNodeTest.php';
  * @link       http://www.pdepend.org/
  *
  * @covers PHP_Depend_Parser
- * @covers PHP_Depend_Builder_Default
  * @covers PHP_Depend_Code_ASTClassOrInterfaceReference
+ * @group pdepend
+ * @group pdepend::ast
+ * @group unittest
  */
 class PHP_Depend_Code_ASTClassOrInterfaceReferenceTest extends PHP_Depend_Code_ASTNodeTest
 {
@@ -70,9 +72,6 @@ class PHP_Depend_Code_ASTClassOrInterfaceReferenceTest extends PHP_Depend_Code_A
      * testReturnValueOfMagicSleepContainsContextProperty
      *
      * @return void
-     * @group pdepend
-     * @group pdepend::ast
-     * @group unittest
      */
     public function testReturnValueOfMagicSleepContainsContextProperty()
     {
@@ -98,9 +97,6 @@ class PHP_Depend_Code_ASTClassOrInterfaceReferenceTest extends PHP_Depend_Code_A
      * testAcceptInvokesVisitOnGivenVisitor
      *
      * @return void
-     * @group pdepend
-     * @group pdepend::ast
-     * @group unittest
      */
     public function testAcceptInvokesVisitOnGivenVisitor()
     {
@@ -119,9 +115,6 @@ class PHP_Depend_Code_ASTClassOrInterfaceReferenceTest extends PHP_Depend_Code_A
      * testAcceptReturnsReturnValueOfVisitMethod
      *
      * @return void
-     * @group pdepend
-     * @group pdepend::ast
-     * @group unittest
      */
     public function testAcceptReturnsReturnValueOfVisitMethod()
     {
@@ -137,14 +130,32 @@ class PHP_Depend_Code_ASTClassOrInterfaceReferenceTest extends PHP_Depend_Code_A
         );
         self::assertEquals(42, $reference->accept($visitor));
     }
+    
+    /**
+     * testGetClassDelegatesToBuilderContextGetClassOrInterface
+     * 
+     * @return void
+     * @since 0.11.0
+     */
+    public function testGetClassDelegatesToBuilderContextGetClassOrInterface()
+    {
+        $context = $this->getBuilderContextMock();
+        $context->expects($this->once())
+            ->method('getClassOrInterface')
+            ->with($this->equalTo(__CLASS__))
+            ->will($this->returnValue($this));
+
+        $reference = new PHP_Depend_Code_ASTClassOrInterfaceReference(
+            $context, __CLASS__
+        );
+
+        $reference->getClass();
+    }
 
     /**
      * testGetTypeDelegatesToBuilderContextGetClassOrInterface
      * 
      * @return void
-     * @group pdepend
-     * @group pdepend::ast
-     * @group unittest
      */
     public function testGetTypeDelegatesToBuilderContextGetClassOrInterface()
     {
@@ -165,9 +176,6 @@ class PHP_Depend_Code_ASTClassOrInterfaceReferenceTest extends PHP_Depend_Code_A
      * testGetTypeCachesReturnValueOfBuilderContextGetClassOrInterface
      * 
      * @return void
-     * @group pdepend
-     * @group pdepend::ast
-     * @group unittest
      */
     public function testGetTypeCachesReturnValueOfBuilderContextGetClassOrInterface()
     {
@@ -188,9 +196,6 @@ class PHP_Depend_Code_ASTClassOrInterfaceReferenceTest extends PHP_Depend_Code_A
      * testReferenceHasExpectedStartLine
      *
      * @return void
-     * @group pdepend
-     * @group pdepend::ast
-     * @group unittest
      */
     public function testReferenceHasExpectedStartLine()
     {
@@ -202,9 +207,6 @@ class PHP_Depend_Code_ASTClassOrInterfaceReferenceTest extends PHP_Depend_Code_A
      * testReferenceHasExpectedStartColumn
      *
      * @return void
-     * @group pdepend
-     * @group pdepend::ast
-     * @group unittest
      */
     public function testReferenceHasExpectedStartColumn()
     {
@@ -216,9 +218,6 @@ class PHP_Depend_Code_ASTClassOrInterfaceReferenceTest extends PHP_Depend_Code_A
      * testReferenceHasExpectedEndLine
      *
      * @return void
-     * @group pdepend
-     * @group pdepend::ast
-     * @group unittest
      */
     public function testReferenceHasExpectedEndLine()
     {
@@ -230,9 +229,6 @@ class PHP_Depend_Code_ASTClassOrInterfaceReferenceTest extends PHP_Depend_Code_A
      * testReferenceHasExpectedEndColumn
      *
      * @return void
-     * @group pdepend
-     * @group pdepend::ast
-     * @group unittest
      */
     public function testReferenceHasExpectedEndColumn()
     {

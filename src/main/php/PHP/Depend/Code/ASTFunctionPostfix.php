@@ -70,12 +70,29 @@
  * @link       http://www.pdepend.org/
  * @since      0.9.6
  */
-class PHP_Depend_Code_ASTFunctionPostfix extends PHP_Depend_Code_ASTInvocation
+class PHP_Depend_Code_ASTFunctionPostfix 
+       extends PHP_Depend_Code_ASTInvocation
+    implements PHP_Depend_Code_ASTClassAware
 {
     /**
      * Type of this node class.
      */
     const CLAZZ = __CLASS__;
+
+    /**
+     * This method will return a class or interface instance that represents the
+     * type that this function returns. The return value of this method is
+     * <b>NULL</b> when the represented function does not return a type.
+     * 
+     * @return PHP_Depend_Code_AbstractClassOrInterface
+     * @since 0.11.0
+     * @todo Currently this method always returns <b>NULL</b> until we implement
+     *       a function lookup similar to the one used for classes and interfaces.
+     */
+    public function getClass()
+    {
+        return null;
+    }
 
     /**
      * Accept method of the visitor design pattern. This method will be called
