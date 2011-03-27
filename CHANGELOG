@@ -4,7 +4,7 @@ PHP_Depend 0.11.0
 - Implemented #8927793: Store the return type of an accessed method.
   Implemented with commit #b4bbf42.
 - Implemented #8928235: Store the type of an accessed property. 
-  Implemented with commit #
+  Implemented with commit #edbcea8.
 
 PHP_Depend 0.10.3
 -----------------
